@@ -2,7 +2,7 @@
 
 Play Snake in your terminal while waiting for Claude Code tasks to complete.
 
-https://github.com/user-attachments/assets/placeholder.mp4
+https://github.com/jgaillard/claude-code-snake/raw/main/demo.mp4
 
 ## Features
 
