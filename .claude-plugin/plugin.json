@@ -1,6 +1,6 @@
 {
   "name": "claude-code-snake",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Play Snake in your terminal while waiting for Claude Code tasks to complete",
   "author": { "name": "Julien Gaillard" }
 }
