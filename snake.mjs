@@ -4,11 +4,13 @@
 // Zero dependencies. Play while your agent works.
 
 import { stdin, stdout } from 'node:process';
-import { writeFileSync, unlinkSync } from 'node:fs';
+import { writeFileSync, unlinkSync, existsSync, readFileSync } from 'node:fs';
+import { execSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
 const PID_FILE = join(tmpdir(), 'claude-snake.pid');
+const PREV_APP_FILE = join(tmpdir(), 'claude-snake-prevapp.txt');
 
 // Write PID so hooks can find us
 writeFileSync(PID_FILE, String(process.pid));
@@ -359,6 +361,19 @@ function cleanup() {
   try {
     unlinkSync(PID_FILE);
   } catch {}
+  // Restore focus to the app the user was in before Snake launched
+  if (process.platform === 'darwin' && existsSync(PREV_APP_FILE)) {
+    try {
+      const prevApp = readFileSync(PREV_APP_FILE, 'utf8').trim();
+      if (prevApp) {
+        execSync(
+          `osascript -e 'tell application "${prevApp}" to activate'`,
+          { stdio: 'ignore' }
+        );
+      }
+      unlinkSync(PREV_APP_FILE);
+    } catch {}
+  }
 }
 
 function start() {

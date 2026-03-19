@@ -48,8 +48,8 @@ if (process.platform === 'darwin') {
     tell application "Terminal"
       activate
       do script "node '${gamePath}'"
-      delay 0.3
-      set font size of front window to 18
+      delay 1
+      set font size of window 1 to 18
     end tell`;
   try {
     execSync(`osascript -e '${osaScript}'`, { stdio: 'ignore' });
