@@ -2,6 +2,8 @@
 
 Play Snake in your terminal while waiting for Claude Code tasks to complete.
 
+![Snake game running in Terminal](snake-demo-static.png)
+
 https://github.com/jgaillard/claude-code-snake/raw/main/demo.mp4
 
 ## Features
