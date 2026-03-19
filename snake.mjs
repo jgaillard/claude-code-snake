@@ -361,13 +361,13 @@ function cleanup() {
   try {
     unlinkSync(PID_FILE);
   } catch {}
-  // Restore focus to the app the user was in before Snake launched
+  // Restore focus to the Claude Code Terminal window by its saved window ID
   if (process.platform === 'darwin' && existsSync(PREV_APP_FILE)) {
     try {
-      const prevApp = readFileSync(PREV_APP_FILE, 'utf8').trim();
-      if (prevApp) {
+      const windowId = readFileSync(PREV_APP_FILE, 'utf8').trim();
+      if (windowId) {
         execSync(
-          `osascript -e 'tell application "${prevApp}" to activate'`,
+          `osascript -e 'tell application "Terminal" to set index of window id ${windowId} to 1'`,
           { stdio: 'ignore' }
         );
       }

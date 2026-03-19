@@ -13,14 +13,14 @@ const PID_FILE = join(tmpdir(), 'claude-snake.pid');
 const PREV_APP_FILE = join(tmpdir(), 'claude-snake-prevapp.txt');
 const gamePath = join(__dirname, '..', 'snake.mjs');
 
-// Save the currently focused app so we can restore it on task stop
+// Save the Terminal window ID so we can restore focus to the Claude Code window
 if (process.platform === 'darwin') {
   try {
-    const prevApp = execSync(
-      `osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true'`,
+    const windowId = execSync(
+      `osascript -e 'tell application "Terminal" to get id of front window'`,
       { encoding: 'utf8' }
     ).trim();
-    writeFileSync(PREV_APP_FILE, prevApp);
+    writeFileSync(PREV_APP_FILE, windowId);
   } catch {}
 }
 
