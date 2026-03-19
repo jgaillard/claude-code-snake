@@ -1,0 +1,11 @@
+{
+  "name": "claude-code-snake",
+  "description": "Play Snake in your terminal while waiting for Claude Code tasks",
+  "plugins": [
+    {
+      "name": "claude-code-snake",
+      "description": "Play Snake in your terminal while waiting for Claude Code tasks to complete",
+      "path": "."
+    }
+  ]
+}
