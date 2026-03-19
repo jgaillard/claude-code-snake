@@ -12,14 +12,15 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const PID_FILE = join(tmpdir(), 'claude-snake.pid');
 const gamePath = join(__dirname, '..', 'snake.mjs');
 
-// Don't double-launch if already running
+// If already running, send SIGUSR2 to reset with countdown
 if (existsSync(PID_FILE)) {
   try {
     const pid = parseInt(readFileSync(PID_FILE, 'utf8'));
     process.kill(pid, 0); // throws if process doesn't exist
+    process.kill(pid, 'SIGUSR2'); // reset game with countdown
     process.exit(0);
   } catch {
-    // stale PID file — continue
+    // stale PID file — continue to launch new instance
   }
 }
 

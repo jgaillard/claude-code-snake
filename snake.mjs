@@ -275,6 +275,45 @@ function render() {
   stdout.write(buf);
 }
 
+// ── Countdown ─────────────────────────────────────────────────────────
+function countdown(cb) {
+  clearInterval(interval);
+  paused = true;
+  let count = 3;
+
+  function drawCount() {
+    let buf = CLEAR;
+    const cx = Math.floor(cols / 2);
+    const cy = Math.floor(rows / 2);
+
+    const label = ' NEW TASK STARTED ';
+    buf += moveTo(cx - Math.floor(label.length / 2), cy - 3);
+    buf += bgc(25) + fg(81) + bold + label + RESET;
+
+    const num = ` ${count} `;
+    buf += moveTo(cx - 1, cy);
+    buf += fg(226) + bold + num + RESET;
+
+    const sub = count > 0 ? ' get ready... ' : '     GO!     ';
+    buf += moveTo(cx - Math.floor(sub.length / 2), cy + 2);
+    buf += fg(245) + sub + RESET;
+
+    stdout.write(buf);
+  }
+
+  drawCount();
+  const cid = setInterval(() => {
+    count--;
+    if (count < 0) {
+      clearInterval(cid);
+      paused = false;
+      cb();
+      return;
+    }
+    drawCount();
+  }, 800);
+}
+
 // ── Input handling ────────────────────────────────────────────────────
 function onKey(key) {
   if (key === '\x03' || key === 'q' || key === 'Q') {
@@ -354,6 +393,17 @@ function start() {
   process.on('SIGUSR1', () => {
     taskComplete = true;
     render();
+  });
+
+  // SIGUSR2 = new task started — reset game with countdown
+  process.on('SIGUSR2', () => {
+    taskComplete = false;
+    clearInterval(interval);
+    init();
+    countdown(() => {
+      render();
+      interval = setInterval(tick, speed);
+    });
   });
 
   process.on('SIGTERM', () => {
