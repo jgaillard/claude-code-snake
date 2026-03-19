@@ -2,6 +2,5 @@
   "name": "claude-code-snake",
   "version": "1.0.0",
   "description": "Play Snake in your terminal while waiting for Claude Code tasks to complete",
-  "author": { "name": "Julien" },
-  "hooks": "./hooks/hooks.json"
+  "author": { "name": "Julien" }
 }
