@@ -431,8 +431,10 @@ function start() {
   });
 
   init();
-  render();
-  interval = setInterval(tick, speed);
+  countdown(() => {
+    render();
+    interval = setInterval(tick, speed);
+  });
 }
 
 start();
